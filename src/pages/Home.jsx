@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { motion, useAnimation } from 'framer-motion';
@@ -28,7 +28,7 @@ const HeroOverlay = styled.div`
   z-index: 1;
 `;
 
-const HeroContent = styled(motion.div)`  /* Apply animation */
+const HeroContent = styled(motion.div)`
   position: relative;
   z-index: 2;
   max-width: 650px;
@@ -42,6 +42,20 @@ const HeroTitle = styled.h1`
   color: #fff;
   margin-bottom: 1.2rem;
   font-weight: 700;
+`;
+
+const StatusText = styled.p`
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 0.8rem;
+  opacity: 0.95;
+  color: #fff;
+`;
+
+const Highlight = styled.span`
+  color: #00ff99; /* Light green for "Open Now" */
+  font-weight: 600;
+  margin-right: 8px;
 `;
 
 const HeroSubtitle = styled.p`
@@ -77,12 +91,24 @@ const HeroButton = styled(Link)`
 
 const Homepage = () => {
   const controls = useAnimation();
+  const [statusData, setStatusData] = useState({ isOpen: true, text: '' });
 
   useEffect(() => {
     controls.start({
       opacity: 1,
       y: 0,
       transition: { duration: 1.2, ease: 'easeOut' },
+    });
+
+    const now = new Date();
+    const hour = now.getHours();
+
+    const isOpen = hour >= 9 && hour < 19;
+    const followText = isOpen ? 'Closes 8 PM' : 'Opens 9 AM';
+
+    setStatusData({
+      isOpen,
+      text: `${followText}  | ⭐ 4.6 (116+ reviews)`
     });
   }, [controls]);
 
@@ -91,16 +117,22 @@ const Homepage = () => {
       <GlobalStyle />
       <HeroSection>
         <HeroOverlay />
-        <HeroContent
-          initial={{ opacity: 0, y: 30 }}
-          animate={controls}
-        >
+        <HeroContent initial={{ opacity: 0, y: 30 }} animate={controls}>
           <HeroTitle>More than just a haircut.</HeroTitle>
-          <HeroSubtitle>Come in, relax and walk out feeling like a new one.</HeroSubtitle>
+          
+          <HeroSubtitle>
+            Come in, relax and walk out feeling like a new one.
+          </HeroSubtitle>
           <ButtonGroup>
             <HeroButton to="/about">Know More</HeroButton>
             <HeroButton to="/contact">Book Now</HeroButton>
           </ButtonGroup>
+          <StatusText>
+            <Highlight style={{ color: statusData.isOpen ? '#00ff99' : '#ff4d4d' }}>
+              {statusData.isOpen ? 'Open Now' : 'Closed Now'}
+            </Highlight>
+            {statusData.text}
+          </StatusText>
         </HeroContent>
       </HeroSection>
     </>

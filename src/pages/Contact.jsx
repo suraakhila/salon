@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
+import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaClock } from 'react-icons/fa';
+
 import axios from 'axios';
 
 // Styled Components
@@ -70,7 +71,7 @@ const TextArea = styled.textarea`
 `;
 
 const SubmitButton = styled.button`
-  background-color: rgb(218, 203, 86);
+  background-color: rgb(158, 157, 141);
   color: white;
   font-size: 1.2rem;
   padding: 1rem;
@@ -81,44 +82,82 @@ const SubmitButton = styled.button`
   transition: all 0.3s ease;
 
   &:hover {
-    background-color: rgb(207, 176, 37);
+    background-color: rgb(186, 186, 186);
     transform: scale(1.03);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
   }
 `;
 
+// Styled Components
 const InfoContainer = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 2rem;
-  padding: 0 1rem;
+  padding: 2rem 1rem;
+  margin-top: 3rem;
 `;
 
 const InfoBox = styled(motion.div)`
   background-color: #fff;
-  padding: 1.5rem;
+  padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-  width: 250px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 280px;
   text-align: center;
   cursor: pointer;
-
+  transition: all 0.3s ease-in-out;
+  border: 1px solid #ddd;
+  
   &:hover {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
+    box-shadow: 0 14px 35px rgba(0, 0, 0, 0.12);
   }
 `;
 
 const IconWrapper = styled.div`
-  font-size: 2rem;
-  margin-bottom: 1rem;
-  color: rgb(94, 94, 90);
+  font-size: 2.8rem;
+  margin-bottom: 1.2rem;
+  color:rgb(171, 205, 200);
+  transition: all 0.3s ease-in-out;
+  
+  &:hover {
+    color:rgb(178, 205, 233);
+    transform: scale(1.1);
+  }
 `;
 
 const Address = styled.p`
-  font-size: 0.95rem;
-  color: #333;
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  font-weight: 500;
+  margin: 0;
+  padding-top: 0.5rem;
 `;
+
+const TitleText = styled.h3`
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: rgb(33, 30, 29);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    color:rgb(125, 134, 143);
+    transform: translateY(-4px);
+  }
+`;
+
+const SmallText = styled.span`
+  display: block;
+  font-size: 0.9rem;
+  color: #777;
+  margin-top: 0.5rem;
+`;
+
 
 // Component
 const Appointment = () => {
@@ -201,38 +240,65 @@ const Appointment = () => {
           <SubmitButton type="submit">Book Now</SubmitButton>
         </Form>
 
-        <InfoContainer>
-          <InfoBox
-            as="a"
-            href="mailto:support@example.com"
-            whileHover={{ scale: 1.05 }}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <IconWrapper><FaEnvelope /></IconWrapper>
-            <Address>support@example.com</Address>
-          </InfoBox>
+      <InfoContainer>
+  <InfoBox
+    as={motion.div}
+    whileHover={{ scale: 1.05 }}
+  >
+    <TitleText>Opening Hours</TitleText>
+    <IconWrapper><FaClock /></IconWrapper>
+    <Address>
+      <strong>Monday - Friday</strong><br />
+      9:00 AM - 8:00 PM<br /><br />
+      <strong>Saturday</strong><br />
+      9:00 AM - 6:00 PM<br /><br />
+      <strong>Sunday</strong><br />
+      10:00 AM - 4:00 PM
+    </Address>
+  </InfoBox>
+<InfoBox
+  as="a"
+  href="mailto:support@example.com"
+  whileHover={{ scale: 1.05 }}
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <TitleText>Email</TitleText>
+  <IconWrapper><FaEnvelope /></IconWrapper>
+  <Address>
+    support@example.com<br />
+    <SmallText>Reach out to us for appointments, queries, or assistance. We reply within 24 hours.</SmallText>
+  </Address>
+</InfoBox>
 
-          <InfoBox
-            as="a"
-            href="tel:+15551234567"
-            whileHover={{ scale: 1.05 }}
-          >
-            <IconWrapper><FaPhone /></IconWrapper>
-            <Address>+1 (555) 123-4567</Address>
-          </InfoBox>
+<InfoBox
+  as="a"
+  href="tel:+15551234567"
+  whileHover={{ scale: 1.05 }}
+>
+  <TitleText>Phone</TitleText>
+  <IconWrapper><FaPhone /></IconWrapper>
+  <Address>
+    +1 (555) 123-4567<br />
+    <SmallText>Call us directly for urgent bookings or customer support between working hours.</SmallText>
+  </Address>
+</InfoBox>
 
-          <InfoBox
-            as="a"
-            href="https://www.google.com/maps/search/?api=1&query=1234+Sunset+Blvd,+Los+Angeles,+CA+90026"
-            whileHover={{ scale: 1.05 }}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <IconWrapper><FaMapMarkerAlt /></IconWrapper>
-            <Address>1234 Sunset Blvd, Los Angeles, CA 90026</Address>
-          </InfoBox>
-        </InfoContainer>
+
+  <InfoBox
+    as="a"
+    href="https://www.google.com/maps/search/?api=1&query=1234+Sunset+Blvd,+Los+Angeles,+CA+90026"
+    whileHover={{ scale: 1.05 }}
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <TitleText>Location</TitleText>
+    <IconWrapper><FaMapMarkerAlt /></IconWrapper>
+    <Address>1234 Sunset Blvd, Los Angeles, CA 90026</Address>
+  </InfoBox>
+</InfoContainer>
+
+
       </FormWrapper>
     </AppointmentSection>
   );
